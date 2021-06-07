@@ -8,6 +8,9 @@ class TicTacToe
     @player_x = Player.new('Madam X', 'X', @board)
     @player_y = Player.new('Mister Y', 'O', @board)
 
+    # get player names
+    get_player_name
+
     # assign the starting player
     @players = [@player_x, @player_y]
     @current_player = @players[rand(2)]
@@ -67,6 +70,15 @@ class TicTacToe
     end
   end
 
+  # Get names of players
+  def get_player_name
+    puts "Enter name of player 1 playing with 'X'"
+    @player_x.name = gets.chomp
+
+    puts "Enter name of player 2 playing with 'O'"
+    @player_y.name = gets.chomp
+  end
+
   # switch_players
   def switch_players
     @current_player = if @current_player == @player_x
@@ -107,10 +119,17 @@ class Player
     # Display message asking coordinates
     puts "#{@name}(#{@piece}), enter your selection"
     # pull coordinates from command line
-    move = gets.to_i - 1
-    col = move % @board.size
-    row = (move - col) / @board.size
-    [row, col]
+    loop do
+      move = gets.to_i - 1
+      if move >= 0
+        col = move % @board.size
+        row = (move - col) / @board.size
+        return [row, col]
+        break
+      else
+        puts 'Please enter a valid selection'
+      end
+    end
   end
 
   # valid_coordinates_format
@@ -185,7 +204,7 @@ class Board
   def within_valid_coordinates?(coords)
     # UNLESS piece coords are in the acceptable range
     row, col = coords.map(&:to_i)
-    if row <= @board.size && col <= @board.size
+    if row < @board.size && col < @board.size
       true
     else
       # display an error message
@@ -270,6 +289,7 @@ class Board
   end
 end
 
+# Extend String class to change color of text
 class String
   def red
     "\e[31m#{self}\e[0m"
