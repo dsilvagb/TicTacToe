@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
+# Controls the game play
 class TicTacToe
-  # initialize
   def initialize
     # set up the board
     @board = Board.new
@@ -9,7 +11,7 @@ class TicTacToe
     @player_y = Player.new('Mister Y', 'O', @board)
 
     # get player names
-    get_player_name
+    player_name?
 
     # assign the starting player
     @players = [@player_x, @player_y]
@@ -25,7 +27,7 @@ class TicTacToe
       @board.render
 
       # ask coordinates from the current player
-      @current_player.get_corodinates
+      @current_player.corodinates?
 
       # break the loop IF the game is over
       if check_game_over
@@ -71,7 +73,7 @@ class TicTacToe
   end
 
   # Get names of players
-  def get_player_name
+  def player_name?
     puts "Enter name of player 1 playing with 'X'"
     @player_x.name = gets.chomp
 
@@ -89,19 +91,18 @@ class TicTacToe
   end
 end
 
+# Manages all player-related functionality
 class Player
   attr_accessor :name, :piece
 
-  # initialize
-  def initialize(name = 'Mystery Player', piece, board)
-    # Set marker type (e.g. X or O)
+  def initialize(name, piece, board)
     @name = name
     @piece = piece
     @board = board
   end
 
   # get_corodinates
-  def get_corodinates
+  def corodinates?
     # loop infinitely
     loop do
       # ask_for_coordinates
@@ -125,7 +126,6 @@ class Player
         col = move % @board.size
         row = (move - col) / @board.size
         return [row, col]
-        break
       else
         puts 'Please enter a valid selection'
       end
@@ -144,6 +144,7 @@ class Player
   end
 end
 
+# Maintains game board state
 class Board
   attr_accessor :size
 
