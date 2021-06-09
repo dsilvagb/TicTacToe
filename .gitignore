@@ -1,3 +1,5 @@
 # Ignore test files
 tictactoe.org
+.vscode
+
 
